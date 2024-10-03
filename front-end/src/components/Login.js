@@ -1,7 +1,27 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 
 const Login = () => {
+  const navigateFun = useNavigate();
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+  
+    if (email !== "" && password !== "") {
+      navigateFun("/chat");
+    } else {
+      alert("Enter your Email and Password!!");
+
+      console.log("Enter your Email and Password!!");
+    }
+  };
+  
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-900 to-black">
       <div className="absolute top-0 left-0 text-white text-2xl font-bold m-3">
@@ -14,9 +34,10 @@ const Login = () => {
         <form className="mt-8 space-y-6">
           <div className="space-y-4">
             <div>
-              <label htmlFor="email" className="sr-only">
-                Email
+              <label htmlFor="email" className="font-bold ml-1"> 
+                Email:
               </label>
+              {/* sr-only */}
               <input
                 id="email"
                 name="email"
@@ -28,9 +49,10 @@ const Login = () => {
               />
             </div>
             <div>
-              <label htmlFor="password" className="sr-only">
-                Password
+              <label htmlFor="password" className="font-bold ml-1" >
+                Password:
               </label>
+              {/* sr-only */}
               <input
                 id="password"
                 name="password"
@@ -57,7 +79,8 @@ const Login = () => {
           <div>
             <button
               type="submit"
-              className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onClick={handleSubmit}
+              className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 duration-200"
             >
               Login now
             </button>

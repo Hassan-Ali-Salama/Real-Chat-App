@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -15,8 +16,11 @@ const Signup = () => {
     } else {
       setErrorMessage("");
       console.log("Form submitted");
+      navigateFun("/profile");
     }
   };
+
+  const navigateFun = useNavigate();
 
   return (
     <div className="flex h-screen">
@@ -52,7 +56,9 @@ const Signup = () => {
           <h2 className="text-2xl font-semibold mb-6">Create an account</h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
-              <label className="block text-gray-700">Email</label>
+              <label className="block text-gray-700 font-bold ml-1">
+                Email:
+              </label>
               <input
                 id="email"
                 name="email"
@@ -66,7 +72,9 @@ const Signup = () => {
               />
             </div>
             <div className="mb-6">
-              <label className="block text-gray-700">Password</label>
+              <label className="block text-gray-700 font-bold ml-1">
+                Password:
+              </label>
               <input
                 id="password"
                 name="password"
@@ -81,7 +89,9 @@ const Signup = () => {
             </div>
 
             <div className="mb-6">
-              <label className="block text-gray-700">Confirm Password</label>
+              <label className="block text-gray-700 font-bold ml-1">
+                Confirm Password:
+              </label>
               <input
                 id="confirmPassword"
                 name="confirmPassword"
@@ -98,7 +108,10 @@ const Signup = () => {
               <p className="text-red-500 text-sm mb-4">{errorMessage}</p>
             )}
 
-            <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-200">
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-200"
+            >
               Create account
             </button>
           </form>
