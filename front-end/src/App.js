@@ -6,7 +6,7 @@ import Chat from "./components/Chat";
 import AboutUs from "./components/AboutUs";
 import Login from "./components/Login";
 import Contact from "./components/Contact";
-
+import Profile from "./components/Profile";
 function App() {
   return (
     <>
@@ -18,6 +18,7 @@ function App() {
           <Route path="/Chat" element={<Chat />} />
           <Route path="/AboutUs" element={<AboutUs />} />
           <Route path="/Contact" element={<Contact />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<h1>404. Page Not Found </h1>} />
         </Routes>
       </Router>

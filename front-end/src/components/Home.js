@@ -6,7 +6,7 @@ const Home = () => {
   const navigateFun = useNavigate();
   return (
     <>
-      <div className="bg-gradient-to-b from-blue-900 to-black min-h-screen min-w-screen">
+      <div className="bg-gradient-to-b from-blue-900 to-black min-h-screen min-w-screen ">
         <Navbar />
 
         {/* Main Content */}
@@ -22,7 +22,7 @@ const Home = () => {
             {/* Buttons */}
             <div className="mt-6 space-x-4">
               <button
-                className="bg-white text-blue-950 px-6 py-3 rounded-full hover:bg-blue-200"
+                className="bg-white text-black px-6 py-3 rounded-full hover:bg-blue-800 hover:text-white border hover:border-white transition-all duration-200"
                 onClick={() => {
                   navigateFun("/Signup");
                 }}
@@ -30,7 +30,7 @@ const Home = () => {
                 Try it Free
               </button>
               <button
-                className="border border-white text-white px-6 py-3 rounded-full hover:bg-blue-800"
+                className="border border-white text-white px-6 py-3 rounded-full hover:bg-blue-900 transition-all duration-200"
                 onClick={() => navigateFun("/Login")}
               >
                 Login
