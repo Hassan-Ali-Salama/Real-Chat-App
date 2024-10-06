@@ -1,10 +1,37 @@
 // Components/Chat.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import ChatArea from "./ChatArea";
+import io from "socket.io-client";
 
+let socket;
+const endpoint = "http://localhost:3000";
 function Chat() {
   const [currentChat, setCurrentChat] = useState(null);
+  const [message, setMessage] = useState("");
+  const [users, setUsers] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [userName, setName] = useState("");
+  const [roomid, setroomid] = useState("");
+
+  useEffect(() => {
+    socket = io(endpoint);
+
+    socket.emit("connection");
+    socket.emit("join", { userName, roomid }, (err) => {
+      if (err) {
+        console.log(err.message);
+      }
+    });
+
+    return () => {
+      socket.disconnect(); // Properly disconnect socket on unmount
+    };
+  }, []);
+
+  const sendMessage = (e) => {
+    // socket.emit("sendmessage", message, setMessage(""));
+  };
 
   // بيانات افتراضية للمحادثات
   const chats = [
@@ -27,7 +54,7 @@ function Chat() {
   return (
     <div className="flex h-screen">
       <Sidebar chats={chats} setCurrentChat={setCurrentChat} />
-      <ChatArea currentChat={currentChat} />
+      <ChatArea currentChat={currentChat} sendMessage={sendMessage} />
     </div>
   );
 }
