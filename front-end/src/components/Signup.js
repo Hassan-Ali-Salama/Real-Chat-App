@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Login_Context, Personel_context } from "../states/contexs.jsx"; // Make sure these contexts are properly exported
 import Message from "./warning.jsx";
-
+import { verify } from "../states/contexs.jsx";
 const url = "http://localhost:3003";
 
 // Function to validate password
@@ -33,6 +33,7 @@ const Signup = () => {
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   const { setPersonel } = useContext(Personel_context);
+  const {verify_info,set_verify_info } = useContext(verify);
 
   const navigate = useNavigate(); // Use navigate for redirection
 
@@ -82,10 +83,11 @@ const Signup = () => {
 
       if (data.auth) {
         navigate("/vertaction");
+        set_verify_info({email:signupEmail});
       }
 
       setPersonel(data);
-
+           console.log(data)
       // Clear form inputs after successful signup
       setSignupEmail("");
       setSignupPassword("");

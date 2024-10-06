@@ -2,7 +2,6 @@ import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Login_Context, Personel_context } from "../states/contexs.jsx";
 import React, { useContext, useState } from "react";
-import ReactCodeInput from 'react-verification-code-input';
 
 const url = "http://localhost:3003";
 
@@ -26,8 +25,6 @@ const validatePassword = (password) => {
 };
 
 const Login = () => {
-    const [errorMessage, setErrorMessage] = useState("");
-
   const { Login_Show, setLogin } = useContext(Login_Context);
   const { Personel, setPersonel } = useContext(Personel_context);
   const [loginEmail, setLoginEmail] = useState("");
@@ -47,7 +44,6 @@ const Login = () => {
     e.preventDefault();
 
     if (!validateEmail(loginEmail)) {
-      console.log("unvalid")
       setLoginError("Please enter a valid email address.");
       return;
     }
@@ -59,6 +55,7 @@ const Login = () => {
     }
 
     try {
+      console.log(loginPassword)
       const response = await fetch(`${url}/auth/login`, {
         method: "POST",
         headers: {
@@ -72,6 +69,12 @@ const Login = () => {
       });
 
       const data = await response.json();
+      if (data.verify)
+        {
+
+
+          navigateFun("/vertaction")
+        }
       if (data.showError) {
         setLoginError(`${data.title}\n${data.message}`);
         return;
