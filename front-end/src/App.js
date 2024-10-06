@@ -1,12 +1,12 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./components/Home";
-import Signup from "./components/Signup";
-import Chat from "./components/Chat";
+import Login from "./components/Auth/Login";
+import Signup from "./components/Auth/Signup";
+import Home from "./components/Home/Home";
+import Chat from "./components/Chat/Chat";
 import AboutUs from "./components/AboutUs";
-import Login from "./components/Login";
 import Contact from "./components/Contact";
-import Profile from "./components/Profile";
+import Profile from "./components/Profile/Profile";
 function App() {
   return (
     <>
