@@ -8,20 +8,23 @@ const getAllRooms = async (req, res) => {
     const rooms = await RoomModel.find();
     res.status(200).json({ success: true, data: rooms });
   } catch (error) {
-    
     res.status(404).json({ message: error.message });
   }
 };
 
 const getRoom = async (req, res) => {
   try {
-    const { id } = req.body;
-    const room = RoomModel.findById((u) => {
-      u.id === id;
-    });
+    const { id } = req.params;
+    const room = await RoomModel.findById(id);
+    if (!room) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Room not found" });
+    }
+    const roomData = room.toObject();
 
-    res.status(200).json({success:true, data:room})
-  } catch (error){
+    res.status(200).json({ success: true, data: roomData });
+  } catch (error) {
     console.log(error);
   }
 };
