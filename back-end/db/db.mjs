@@ -16,22 +16,5 @@ const ConnectDB = async ()=>{
     };
     
 }
-const userSchema = new Schema({
-  name: {
-    type: String,
-    min: 3,
-    max: 255,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-  },
-  verified: {
-    type: Boolean,
-    default: false,
-  },
-});
 
-const User = ConnectDB.model("user", userSchema);
 export default ConnectDB;
