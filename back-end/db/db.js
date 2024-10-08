@@ -1,17 +1,22 @@
+// Importing dotenv and mongoose using require
+const dotenv = require('dotenv');
+dotenv.config({ path: "../.env" }); // Use an object with path to specify .env location
+
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const ConnectDB = async ()=>{
-    try{
+// Async function to connect to the database
+const ConnectDB = async () => {
+    try {
         const conn = await mongoose.connect(
-          "mongodb+srv://2022170867:5MmUYmD4ElTkEtb7@chat.tq4eg.mongodb.net/?retryWrites=true&w=majority&appName=chat"
-        ).then(console.log('connected'));
-        
-    }catch(error)
-    {
-        console.log({message:`failed to connect to db ${error}`});
-        process.exit(1);
-    };
-    
-}
+            process.env.DB_URL
+        );
+        console.log('connected');
+    } catch (error) {
+        console.log({ message: `failed to connect to db ${error}` });
+        process.exit(1); // Exit process if unable to connect
+    }
+};
 
+// Exporting the ConnectDB function using module.exports
 module.exports = ConnectDB;

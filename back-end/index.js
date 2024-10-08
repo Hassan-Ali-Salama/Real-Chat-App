@@ -1,65 +1,55 @@
+// Import statements for CommonJS
 const express = require("express");
 const db = require("mongoose");
 const http = require("http");
-const socketio = require("socket.io");
+const socketio = require("socket.io"); // socket.io doesn't need to be destructured like in ES modules
 const cors = require("cors");
-const ConnectDB = require("./db/db");
+const ConnectDB = require("./db/db.js"); // Use .js since it's now CommonJS
 const dotenv = require("dotenv");
-const router = require("./Routes/Room.route");
-const axios = require("axios");
-const { updateRoom } = require("./db/Controlers/Room.controle");
+const router = require("./Routes/Room.route.js"); // Use .js for CommonJS
+const path = require("path");
+const { dirname } = require("path");
+const { fileURLToPath } = require("url");
+const cookieParser = require('cookie-parser');
+const authRoutes = require('./Routes/auth.js'); // Use .js for CommonJS
+
+// Load environment variables
+dotenv.config();
+
 const app = express();
 const server = http.createServer(app);
-const Room = require("../back-end/db/Models/Room.model");
-const io = socketio(server, {
-  cors: {
-    origin: "*", // Frontend URL
-    methods: ["GET", "POST"],
-    credentials: true,
-  },
-});
+const io = socketio(server); // No need to destructure `Server` in CommonJS
 
-app.use(cors());
+app.use(
+  cors({
+    origin: true, // Replace with your React app's origin if different
+    credentials: true, // Allow cookies to be sent
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // Allow these methods
+  })
+);
 app.use(express.json());
+app.use(cookieParser());
+app.use("/auth", authRoutes); // Auth routes (signup, login)
+
 dotenv.config();
 
 app.use(router);
-app.use(
-  cors({
-    origin: "*", // Your frontend URL
-    methods: ["GET", "POST"],
-    credentials: true,
-  })
-);
 
-io.on("connect", (socket) => {
-  socket.on("connection", () => {
-    console.log("someone is connected");
+function errorHandler(err, req, res, next) {
+  const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
+  res.status(statusCode).json({
+    message: err.message,
+    stack: process.env.NODE_ENV === "production" ? null : err.stack,
   });
+}
 
-  socket.on("join", async ({ userName, roomid, callback }) => {
-    console.log("someone is joined");
-    roomid = "66fd4d3d872bc33b0fd6d49d";
-    userName = "mohamed";
-    try {
-      const room = await Room.findById(roomid);
-      console.log(room);
-      if (room) {
-        if (room.users.includes(userName)) {
-          console.log("user name is used");
-        } else {
-          room.users.push(userName);
-          room.save();
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching room:", error);
-    }
-  });
-});
+io.on("connect", () => {});
 
-server.listen(process.env.PORT || 3000, () => {
-  console.log(process.env.Port);
+app.use(cookieParser());
+app.use(errorHandler);
+
+server.listen(process.env.PORT || 3003, () => {
+  console.log(process.env.PORT || 3003);
   ConnectDB();
   console.log("App is running on port 3000");
 });

@@ -2,7 +2,7 @@
 import React from "react";
 import Header from "./Header";
 
-function ChatArea({ currentChat, setMessage, sendMessage }) {
+function ChatArea({ currentChat }) {
   if (!currentChat) {
     return (
       <div className="w-3/4 p-4 bg-gradient-to-r from-blue-900 to-black flex items-center justify-center ">
@@ -84,9 +84,8 @@ function ChatArea({ currentChat, setMessage, sendMessage }) {
           placeholder="Type message..."
           //   className="w-full p-2 border rounded"
           className="w-full p-2 border border-gray-300 rounded mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          onChange={(e) => setMessage(e.value)}
         />
-        <button className="p-2 rounded-full bg-blue-500 text-white" onChange={sendMessage()}>
+        <button className="p-2 rounded-full bg-blue-500 text-white">
           Send
         </button>
       </div>
