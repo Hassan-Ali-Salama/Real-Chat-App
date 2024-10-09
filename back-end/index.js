@@ -26,7 +26,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use('/auth', authRoutes);  // Auth routes (signup, login)
 
-app.use(router);
+app.use("/",router);
 const { MongoClient } = require('mongodb');
 
 const mongodb = new MongoClient(process.env.DB_URL);

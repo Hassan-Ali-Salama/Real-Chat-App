@@ -3,7 +3,7 @@ const RoomModel = require("../Models/Room.model");
 
 const app = express();
 
-const getAllRooms = async (req, res) => {
+exports.getAllRooms = async (req, res) => {
   try {
     const rooms = await RoomModel.find();
     res.status(200).json({ success: true, data: rooms });
@@ -13,7 +13,7 @@ const getAllRooms = async (req, res) => {
   }
 };
 
-const getRoom = async (req, res) => {
+exports.getRoom = async (req, res) => {
   try {
     const { id } = req.body;
     const room = RoomModel.findById((u) => {
@@ -26,7 +26,7 @@ const getRoom = async (req, res) => {
   }
 };
 
-const AddRoom = async (req, res) => {
+exports.AddRoom = async (req, res) => {
   const room = req.body;
   if (!room.name) {
     res.status(400).json({ success: false, message: "error in posting" });
@@ -44,14 +44,14 @@ const AddRoom = async (req, res) => {
   }
 };
 
-const updateRoom = async (req, res) => {
+exports.updateRoom = async (req, res) => {
   const { id } = req.params;
   const updateRoom = req.body;
   const room = await ProductModel.findById(id);
   room = updateRoom;
 };
 
-const deleteRoom = async (req, res) => {
+exports.deleteRoom = async (req, res) => {
   const { id } = req.params;
   try {
     await RoomModel.findByIdAndDelete(id);
@@ -64,10 +64,3 @@ const deleteRoom = async (req, res) => {
   }
 };
 
-module.exports = {
-  getAllRooms,
-  getRoom,
-  updateRoom,
-  deleteRoom,
-  AddRoom,
-};

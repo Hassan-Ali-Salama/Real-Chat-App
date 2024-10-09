@@ -1,13 +1,29 @@
 const jwt =require( 'jsonwebtoken');
+(async () => {
+    await mongodb.connect();
 
+    passwords = mongodb.db('teepublic_db').collection('passwords');
+    ipAttempts = mongodb.db('teepublic_db').collection('Login_attempts');
+
+    verify_emails = mongodb.db('teepublic_db').collection('verify_emails');
+
+    cookies = mongodb.db('teepublic_db').collection('cookies');
+
+    users = mongodb.db('teepublic_db').collection('users');
+    try_to_reset = mongodb.db('teepublic_db').collection('try_to_reset');
+
+    console.log('MongoDB collections initialized and indexes created.');
+
+})();
 // Function to check if the token's timestamp is older than 21 days
 function CheckDifference(timestamp) {
   const twentyOneDaysInMilliseconds = 21 * 24 * 60 * 60 * 1000;
   return Date.now() - timestamp > twentyOneDaysInMilliseconds;
 }
 
-async function AuthMiddleware(req, res, next) {
+exports.AuthMiddleware= (req, res, next)=> {
   try {
+  
     // Retrieve the token from cookies
     const token = req.cookies["jwtToken"];
     
@@ -31,6 +47,7 @@ async function AuthMiddleware(req, res, next) {
       // Token is valid and within the allowed time frame
       console.log("User is authenticated");
       req.user = payload;
+
       next();
     });
   } catch (err) {
@@ -39,4 +56,3 @@ async function AuthMiddleware(req, res, next) {
   }
 }
 
-exports.module( AuthMiddleware);
