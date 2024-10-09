@@ -18,17 +18,13 @@ let passwords, ipAttempts, verify_emails, cookies, users, try_to_reset;
 
     passwords = mongodb.db('teepublic_db').collection('passwords');
     ipAttempts = mongodb.db('teepublic_db').collection('Login_attempts');
-    await ipAttempts.createIndex({ "createdAt": 1 }, { expireAfterSeconds: 600 }); // Documents expire after 10 minutes
 
     verify_emails = mongodb.db('teepublic_db').collection('verify_emails');
-    await verify_emails.createIndex({ "createdAt": 1 }, { expireAfterSeconds: 3 * 60 }); // Documents expire after 3 minutes
 
     cookies = mongodb.db('teepublic_db').collection('cookies');
-    await cookies.createIndex({ "createdAt": 1 }, { expireAfterSeconds: 16 * 24 * 60 * 60 }); // Documents expire after 16 days
 
     users = mongodb.db('teepublic_db').collection('users');
     try_to_reset = mongodb.db('teepublic_db').collection('try_to_reset');
-    await try_to_reset.createIndex({ "createdAt": 1 }, { expireAfterSeconds: 3 * 60 * 60 }); // Documents expire after 3 hours
 
     console.log('MongoDB collections initialized and indexes created.');
 
@@ -126,7 +122,7 @@ exports.signupSession = async (req, res) => {
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    await passwords.updateOne(
+     var pass_info= await passwords.updateOne(
       { email: email },               // Query to find the document by email
       { 
         $set: { 
@@ -144,6 +140,18 @@ exports.signupSession = async (req, res) => {
       { 
         $set: { num: num, count: 0 },  // Always update 'num' and 'count'
         $setOnInsert: { global_retries: 0 }  // Set 'global_retries' to 0 only on insert
+      },
+      { upsert: true }  // Insert if the document doesn't exist
+    );
+    await users.updateOne(
+      { email: email,_id:pass_info._id },  // Query to find the document
+      { 
+
+        $set: {rooms:[]
+          
+      
+          },  // Always update 'num' and 'count'
+           // Set 'global_retries' to 0 only on insert
       },
       { upsert: true }  // Insert if the document doesn't exist
     );
