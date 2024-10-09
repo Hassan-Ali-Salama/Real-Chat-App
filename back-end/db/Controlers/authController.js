@@ -230,8 +230,8 @@ exports.loginSession = async (req, res) => {
   try {
     // Ensure ipRecord has a valid failedAttempts count (default to 0 if undefined)
     const failedAttempts = ipRecord ? (ipRecord.failedAttempts) : 0;
-
-    if (failedAttempts < 10) {
+  
+    if (!failedAttempts||failedAttempts < 10) {
       const isPasswordValid = await bcrypt.compare(password, info.password);
 
       if (isPasswordValid) {

@@ -1,5 +1,3 @@
-
-
 const express = require("express");
 const db = require("mongoose");
 const http = require("http");
@@ -10,25 +8,15 @@ const router = require("./Routes/Room.route");
 const path = require("path");
 const cookieParser = require('cookie-parser');
 const authRoutes = require('./Routes/auth.js');
-const { fileURLToPath } = require('url');
+const { MongoClient } = require('mongodb');
+
 dotenv.config();
+
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-app.use(cors({
-  origin: 'http://localhost:3000', // Replace with your React app's origin if different
-  credentials: true,  
-              // Allow cookies to be sent
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allow these methods
-}));
-app.use(express.json());
-app.use(cookieParser());
-app.use('/auth', authRoutes);  // Auth routes (signup, login)
-
-app.use("/",router);
-const { MongoClient } = require('mongodb');
-
+// MongoDB connection
 const mongodb = new MongoClient(process.env.DB_URL);
 
 let passwords, ipAttempts, verify_emails, cookies, users, try_to_reset;
@@ -36,19 +24,40 @@ let passwords, ipAttempts, verify_emails, cookies, users, try_to_reset;
 (async () => {
     await mongodb.connect();
 
-    passwords = mongodb.db('teepublic_db').collection('passwords');
-    ipAttempts = mongodb.db('teepublic_db').collection('Login_attempts');
-
-    verify_emails = mongodb.db('teepublic_db').collection('verify_emails');
-
-    cookies = mongodb.db('teepublic_db').collection('cookies');
-
-    users = mongodb.db('teepublic_db').collection('users');
-    try_to_reset = mongodb.db('teepublic_db').collection('try_to_reset');
+    const db = mongodb.db('teepublic_db');
+    passwords = db.collection('passwords');
+    ipAttempts = db.collection('Login_attempts');
+    verify_emails = db.collection('verify_emails');
+    cookies = db.collection('cookies');
+    users = db.collection('users');
+    try_to_reset = db.collection('try_to_reset');
 
     console.log('MongoDB collections initialized and indexes created.');
-
 })();
+
+// Middleware
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true,
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+}));
+app.use(express.json());
+app.use(cookieParser());
+
+// Routes
+app.use('/auth', authRoutes);
+app.use( router);
+
+// Serve React app
+const buildPath = path.join("./front-end", 'build');
+app.use(express.static("./front-end/build"));
+app.get('/', (req, res) => {
+  res.sendFile(path.join("./front-end/build", 'index.html'));
+});
+
+// Fallback to index.html for React Router
+
+// Error handling middleware
 function errorHandler(err, req, res, next) {
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
   res.status(statusCode).json({
@@ -57,9 +66,18 @@ function errorHandler(err, req, res, next) {
   });
 }
 
-io.on("connect", () => {});
 app.use(errorHandler);
-server.listen(process.env.PORT || 3003, () => {
-  console.log(`App is running on port ${process.env.PORT || 3003}`);
- 
+
+// Socket.IO setup
+io.on("connect", (socket) => {
+  console.log('New client connected');
+  socket.on('disconnect', () => {
+    console.log('Client disconnected');
+  });
+});
+
+// Start the server
+const PORT = process.env.PORT || 3003;
+server.listen(PORT, () => {
+  console.log(`App is running on port ${PORT}`);
 });

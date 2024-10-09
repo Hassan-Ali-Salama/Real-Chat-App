@@ -1,13 +1,13 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useContext,useEffect } from "react";
-import Home from "./components/Home";
-import Signup from "./components/Signup";
-import Chat from "./components/Chat";
-import AboutUs from "./components/AboutUs";
-import Login from "./components/Login";
-import Contact from "./components/Contact";
-import Profile from "./components/Profile";
+import Home from "./components/Home.js";
+import Signup from "./components/Signup.js";
+import Chat from "./components/Chat.js";
+import AboutUs from "./components/AboutUs.js";
+import Login from "./components/Login.js";
+import Contact from "./components/Contact.js";
+import Profile from "./components/Profile.js";
 import { Login_Context,Personel_context } from "./states/contexs.jsx"
 import VerificationForm from "./components/vertication_email.jsx"
 const url = "http://localhost:3003"
