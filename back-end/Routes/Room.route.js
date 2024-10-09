@@ -1,6 +1,6 @@
 const express = require("express");
 // const controller = require("../db/Controlers");
-const { deleteRoom, updateRoom, AddRoom, getAllRooms, getRoom } = require("../db/Controlers/Room.controle");
+const { deleteRoom, updateRoom, AddRoom, getAllRooms, getRoom } = require("../db/Controlers/Room.controle.js");
 const router = express.Router();
 
 router.get("/", getAllRooms);

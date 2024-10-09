@@ -12,14 +12,16 @@ const VerificationForm = () => {
   const navigateFun = useNavigate();
 
   // Function to handle login submit
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {     
+
     e.preventDefault(); // Prevent the default form submission
 
     // Validate input (optional)
 
 
-    try {
-      const response = await fetch(`${url}/auth/verification`, {
+    try {   
+
+      const response = await fetch(`${url}/auth/verification/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -51,6 +53,39 @@ const VerificationForm = () => {
     }
   };
 
+const handleReVertaction = async (e) => {
+  e.preventDefault();
+
+  try {
+    const endpoint = `${url}/auth/ReVertaction`;
+    console.log('Sending request to:', endpoint); // Debugging line
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: Personel.email }),
+      credentials: "include",
+    });
+
+    const data = await response.json(); // Moved this line below the console log
+    console.log('Response data:', data); // Debugging line
+
+    if (data.showError) {
+      alert(`${data.title}\n${data.message}`);
+      return;
+    }
+
+    if (data.success) {
+      alert(`${data.title}\n${data.message}`);
+    } else {
+      alert(`${data.title}\n${data.message}`);
+    }
+  } catch (error) {
+    console.error("Error during resending verification:", error);
+    alert("An error occurred during resending verification.");
+  }
+};
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-900 to-black">
       <div className="absolute top-0 left-0 text-white text-2xl font-bold m-3">
@@ -80,7 +115,7 @@ const VerificationForm = () => {
         
         <div className="text-lg">
           <span className="text-gray-500">Didn't receive email?</span> 
-          <a href="#" className="text-blue-600 hover:underline ml-2 font-bold">
+          <a onClick={handleReVertaction} className="text-blue-600 hover:underline ml-2 font-bold">
             Try again
           </a>
         </div>

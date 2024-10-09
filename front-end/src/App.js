@@ -51,7 +51,7 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path="/" element={Login_Show?<Home />:<Login/>} />
+          <Route path="/" element={<Home />} />
           <Route path="/Signup" element={<Signup />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/Chat" element={Login_Show?<Chat />:<Login/>} />
