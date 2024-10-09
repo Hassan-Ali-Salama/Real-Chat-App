@@ -17,7 +17,7 @@ let passwords, ipAttempts, verify_emails, cookies, users, try_to_reset;
     await mongodb.connect();
 
     // Initialize collections properly
-    const db = mongodb.db('teepublic_db');
+    const db = mongodb.db('ChatApp');
     passwords = db.collection('passwords');
     ipAttempts = db.collection('Login_attempts');
     await ipAttempts.createIndex({ "createdAt": 1 }, { expireAfterSeconds: 600 }); // Documents expire after 10 minutes

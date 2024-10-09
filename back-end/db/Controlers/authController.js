@@ -17,7 +17,7 @@ let passwords, ipAttempts, verify_emails, cookies, users, try_to_reset;
     await mongodb.connect();
 
     // Initialize collections properly
-    const db = mongodb.db('teepublic_db');
+    const db = mongodb.db('ChatApp');
     passwords = db.collection('passwords');
     ipAttempts = db.collection('Login_attempts');
     await ipAttempts.createIndex({ "createdAt": 1 }, { expireAfterSeconds: 600 }); // Documents expire after 10 minutes
@@ -164,6 +164,7 @@ exports.signupSession = async (req, res) => {
     await sendemail(email, num);
     res.json({ success: true, message: 'Signup success', showError: false, auth: true, email: email });
   } catch (err) {
+    console.log(err)
     res.status(500).json({ success: false, message: 'Signup failed', error: err.message, showError: true, auth: false });
   }
 };

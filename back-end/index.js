@@ -24,7 +24,7 @@ let passwords, ipAttempts, verify_emails, cookies, users, try_to_reset;
 (async () => {
     await mongodb.connect();
 
-    const db = mongodb.db('teepublic_db');
+    const db = mongodb.db('ChatApp');
     passwords = db.collection('passwords');
     ipAttempts = db.collection('Login_attempts');
     verify_emails = db.collection('verify_emails');
@@ -46,16 +46,16 @@ app.use(cookieParser());
 
 // Routes
 app.use('/auth', authRoutes);
-app.use( router);
+app.use("/rooms", router);
 
 // Serve React app
-const buildPath = path.join("./front-end", 'build');
-app.use(express.static("./front-end/build"));
-app.get('/', (req, res) => {
-  res.sendFile(path.join("./front-end/build", 'index.html'));
-});
+const buildPath = path.join(__dirname, 'front-end', 'build');
+app.use(express.static(buildPath));
 
-// Fallback to index.html for React Router
+// Fallback to index.html for any other routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(buildPath, 'index.html'));
+});
 
 // Error handling middleware
 function errorHandler(err, req, res, next) {
