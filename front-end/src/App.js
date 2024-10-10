@@ -7,6 +7,9 @@ import AboutUs from "./components/AboutUs";
 import Login from "./components/Login";
 import Contact from "./components/Contact";
 import Profile from "./components/Profile";
+import SetCode from "./components/SetCode";
+import ForgotPassword from "./components/ForgotPassword";
+import ChangePassword from "./components/ChangePassword";
 function App() {
   return (
     <>
@@ -19,6 +22,9 @@ function App() {
           <Route path="/AboutUs" element={<AboutUs />} />
           <Route path="/Contact" element={<Contact />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
+          <Route path="/setcode" element={<SetCode />} />
+          <Route path="/changepassword" element={<ChangePassword />} />
           <Route path="*" element={<h1>404. Page Not Found </h1>} />
         </Routes>
       </Router>

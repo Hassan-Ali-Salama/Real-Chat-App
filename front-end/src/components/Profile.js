@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
 function Profile() {
   const [name, setName] = useState("Khaled Shehab");
   const [introduction, setIntroduction] = useState("I am React Web Developer");
   const [image, setImage] = useState("path_to_profile_image");
+  const [successMessage, setSuccessMessage] = useState(""); // حالة لتخزين رسالة النجاح
 
   // Load saved data from localStorage when the component mounts
   useEffect(() => {
@@ -30,11 +32,12 @@ function Profile() {
   };
 
   const handleSave = () => {
-    // Save data to localStorage
+    
     localStorage.setItem("name", name);
     localStorage.setItem("introduction", introduction);
     localStorage.setItem("image", image);
-    alert("Profile saved successfully!");
+    
+    setSuccessMessage("Profile saved successfully!");
   };
 
   const navigateFun = useNavigate();
@@ -102,6 +105,11 @@ function Profile() {
         >
           Back
         </button>
+
+        {/* Message for successful save */}
+        {successMessage && (
+          <p className="mt-4 text-green-600 text-center">{successMessage}</p>
+        )}
       </div>
     </div>
   );

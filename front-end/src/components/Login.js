@@ -2,25 +2,26 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-
 const Login = () => {
   const navigateFun = useNavigate();
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-  
-    if (email !== "" && password !== "") {
+
+    // Regular expression to validate email
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (email !== "" && password !== "" && emailPattern.test(email)) {
       navigateFun("/chat");
     } else {
-      alert("Enter your Email and Password!!");
+      alert("Please enter a valid Email and Password!");
 
-      console.log("Enter your Email and Password!!");
+      console.log("Please enter a valid Email and Password!");
     }
   };
-  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-900 to-black">
@@ -34,7 +35,7 @@ const Login = () => {
         <form className="mt-8 space-y-6">
           <div className="space-y-4">
             <div>
-              <label htmlFor="email" className="font-bold ml-1"> 
+              <label htmlFor="email" className="font-bold ml-1">
                 Email:
               </label>
               {/* sr-only */}
@@ -49,7 +50,7 @@ const Login = () => {
               />
             </div>
             <div>
-              <label htmlFor="password" className="font-bold ml-1" >
+              <label htmlFor="password" className="font-bold ml-1">
                 Password:
               </label>
               {/* sr-only */}
@@ -68,7 +69,7 @@ const Login = () => {
           <div className="flex items-center justify-between">
             <div className="text-sm">
               <NavLink
-                href="#"
+                to="/ForgotPassword"
                 className="font-medium text-blue-600 hover:text-blue-500"
               >
                 Forgot Password?
