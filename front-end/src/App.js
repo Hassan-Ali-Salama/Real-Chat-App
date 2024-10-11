@@ -10,11 +10,12 @@ import Contact from "./components/Contact.js";
 import Profile from "./components/Profile.js";
 import { Login_Context,Personel_context } from "./states/contexs.jsx"
 import VerificationForm from "./components/vertication_email.jsx"
+import Room from "./components/Room.jsx";
 const url = "http://localhost:3003"
 
 function App() {
       const { Login_Show, setLogin } = useContext(Login_Context);
-    var {Personel,setPersonel}=useContext(Personel_context);
+      var {Personel,setPersonel}=useContext(Personel_context);
   
   useEffect(() => {
     async function fetch_data() {
@@ -59,7 +60,7 @@ function App() {
           <Route path="/Contact" element={Login_Show?<Contact />:<Login/>} />
           <Route path="/profile" element={Login_Show?<Profile />:<Login/>} />
           <Route path="/vertaction" element={<VerificationForm/>} />
-
+          <Route path="/Room/:roomid/:email/:roomname"  element={<Room />}/>
           <Route path="*" element={<Login/>} />
         </Routes>
       </Router>

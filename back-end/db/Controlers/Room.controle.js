@@ -6,22 +6,20 @@ const app = express();
 exports.getAllRooms = async (req, res) => {
   try {
     const rooms = await RoomModel.find();
-    res.status(200).json({ success: true, data: rooms });
+    return res.status(200).json({ success: true, data: rooms });
   } catch (error) {
-    
+    console.log(error);
     res.status(404).json({ message: error.message });
   }
 };
 
 exports.getRoom = async (req, res) => {
   try {
-    const { id } = req.body;
-    const room = RoomModel.findById((u) => {
-      u.id === id;
-    });
+    const { id } = req.params;
+    const room = await RoomModel.findById(id);
 
-    res.status(200).json({success:true, data:room})
-  } catch (error){
+    res.status(200).json({ success: true, data: room });
+  } catch (error) {
     console.log(error);
   }
 };
@@ -47,7 +45,7 @@ exports.AddRoom = async (req, res) => {
 exports.updateRoom = async (req, res) => {
   const { id } = req.params;
   const updateRoom = req.body;
-  const room = await ProductModel.findById(id);
+  const room = await RoomModel.findById(id);
   room = updateRoom;
 };
 
@@ -63,4 +61,3 @@ exports.deleteRoom = async (req, res) => {
     console.log("error");
   }
 };
-

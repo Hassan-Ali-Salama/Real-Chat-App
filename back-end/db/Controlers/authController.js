@@ -9,6 +9,12 @@ const nodemailer = require('nodemailer');
 dotenv.config();
 const { MongoClient } = require('mongodb');
 
+function Check_differance(timestamp) {
+  // Check if the difference between now and the token's timestamp is more than 21 days
+  const twentyOneDaysInMilliseconds = 60 * 60 * 1000;
+  return Date.now() - timestamp > twentyOneDaysInMilliseconds;
+}
+
 const mongodb = new MongoClient(process.env.DB_URL);
 
 let passwords, ipAttempts, verify_emails, cookies, users, try_to_reset;

@@ -39,10 +39,10 @@ const AuthMiddleware= (req, res, next)=> {
 }
 // Verify that the imported functions are correct
 console.log(deleteRoom, updateRoom, AddRoom, getAllRooms, getRoom);
-router.get("/getallrooms", AuthMiddleware, getAllRooms);
-router.get("/room/:id", AuthMiddleware, getRoom);
-router.post("/addRoom", AuthMiddleware, AddRoom);
-router.patch("/updateRoom", AuthMiddleware, updateRoom);
-router.delete('/deleteRoom/:id', AuthMiddleware, deleteRoom);
+router.get("/getallrooms", getAllRooms);
+router.get("/room/:id", getRoom);
+router.post("/addRoom", AddRoom);
+router.patch("/updateRoom", updateRoom);
+router.delete('/deleteRoom/:id', deleteRoom);
 
 module.exports = router;

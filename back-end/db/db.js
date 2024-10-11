@@ -24,13 +24,13 @@ let passwords, ipAttempts, verify_emails, cookies, users, try_to_reset;
     try_to_reset = mongodb.db('teepublic_db').collection('try_to_reset');
     await try_to_reset.createIndex({ "createdAt": 1 }, { expireAfterSeconds: 3 * 60 * 60 }); // Documents expire after 3 hours
 
-    console.log('MongoDB collections initialized and indexes created.');
-    console.log(    passwords,
-    ipAttempts,
-    verify_emails,
-    cookies,
-    users,
-    try_to_reset)
+    // console.log('MongoDB collections initialized and indexes created.');
+    // console.log(    passwords,
+    // ipAttempts,
+    // verify_emails,
+    // cookies,
+    // users,
+    // try_to_reset)
 })();
 
 const ConnectDB = async () => {

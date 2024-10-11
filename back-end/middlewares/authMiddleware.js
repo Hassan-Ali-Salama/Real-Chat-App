@@ -21,9 +21,8 @@ function CheckDifference(timestamp) {
   return Date.now() - timestamp > twentyOneDaysInMilliseconds;
 }
 
-exports.AuthMiddleware= (req, res, next)=> {
+exports. AuthMiddleware = async(req, res, next)=> {
   try {
-  
     // Retrieve the token from cookies
     const token = req.cookies["jwtToken"];
     
@@ -37,9 +36,10 @@ exports.AuthMiddleware= (req, res, next)=> {
         console.log("Token verification failed:", err);
         return res.status(401).json({ auth: false, message: "Invalid or expired token" });
       }
-
+      console.log()
+console.log(payload)
       // Check if the token's payload contains a valid timestamp and if it's older than 21 days
-      if (!payload.data || CheckDifference(payload.data)) {
+      if (!payload.date ||payload.exp>Date.now()) {
         console.log("Token has expired or timestamp missing");
         return res.status(401).json({ auth: false, message: "Token expired" });
       }
@@ -47,12 +47,12 @@ exports.AuthMiddleware= (req, res, next)=> {
       // Token is valid and within the allowed time frame
       console.log("User is authenticated");
       req.user = payload;
-
+      
       next();
     });
   } catch (err) {
     console.error("Authentication error:", err);
-    return res.status(500).json({ auth: false, message: "Internal server error" });
-  }
+    return res.status(500).json({ auth: false, message: "Internal server error" });
+  }
 }
 

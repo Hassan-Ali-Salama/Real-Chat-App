@@ -1,23 +1,29 @@
 // components/Header.js
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPhone,
   faVideo,
   faEllipsisH,
 } from "@fortawesome/free-solid-svg-icons";
+import { Login_Context, Personel_context } from "../states/contexs.jsx";
 
-function Header({ chat }) {
+
+function Header({roomname}) {
+  const { Login_Show, setLogin } = useContext(Login_Context);
+  var { Personel, setPersonel } = useContext(Personel_context);
+  console.log(roomname);
   return (
+    
     <div className="p-4 bg-white border-b flex items-center justify-between">
       <div className="flex items-center space-x-4">
-        <img
+        {/* <img
           src={`https://i.pravatar.cc/150?img=${chat.id}`}
           className="w-10 h-10 rounded-full"
           alt={chat.name}
-        />
+        /> */}
         <div>
-          <p className="font-semibold">{chat.name}</p>
+          <p className="font-semibold">{roomname}</p>
           <p className="text-xs text-green-500">Online</p>
         </div>
       </div>
