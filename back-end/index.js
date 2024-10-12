@@ -19,7 +19,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server, {
   cors: {
-    origin: "*", // Replace with your client URL
+    origin: "http://localhost:3000", // Replace with your client URL
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -89,6 +89,7 @@ io.on("connect", (socket) => {
   socket.on("join", async ({ roomid, email, callback }) => {
     console.log("someone is joined");
     try {
+
       console.log(roomid);
       console.log(email);
       const room = await Room.findById(roomid);
@@ -97,33 +98,34 @@ io.on("connect", (socket) => {
         if (room.users.includes(email)) {
           console.log("user name is used");
         } else {
+          socket.join(room);
           room.users.push(email);
           room.save();
+          
         }
+        
       }
+      
     } catch (error) {
       console.error("Error fetching room:", error);
       callback();
     }
-
-    
   });
 
   socket.on("lets send", () => {
     console.log("deal");
   });
 
-  socket.on('send',async ({text, sender, roomid})=>{
-    try{
+  socket.on("send", async ({ text, sender, roomid }) => {
+    try {
       const room = await RoomModel.findById(roomid);
-      room.messages.push({message:text, sender:sender});
+      room.messages.push({ message: text, sender: sender });
       room.save();
-      console.log('message done');
-    }catch(error)
-    {
-
-    }
-  })
+      socket.emit("message", { message: { text, sender }, change: Date.now() });
+      socket.broadcast.emit("update",{text:text, sender:sender});
+      console.log("message done");
+    } catch (error) {}
+  });
 });
 
 // Start the server

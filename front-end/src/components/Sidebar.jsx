@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Chat from "./Chat";
@@ -12,7 +12,7 @@ function Sidebar() {
   const [chats, setChats] = useState();
   const { Login_Show, setLogin } = useContext(Login_Context);
   var { Personel, setPersonel } = useContext(Personel_context);
-  
+
   // Load profile data from localStorage when the component mounts
 
   useEffect(() => {
@@ -25,11 +25,14 @@ function Sidebar() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3003/rooms/getallrooms"
+          "http://localhost:3003/rooms/getallrooms",
+          {
+            withCredentials: true,
+          }
         );
-        console.log('the response',response.data);
+        console.log("the response", response.data);
         setChats(response.data);
-        console.log('after response', response.data)
+        console.log("after response", response.data);
       } catch (error) {
         console.error("Error fetching chats:", error);
       }
@@ -37,6 +40,31 @@ function Sidebar() {
 
     fetchData();
   }, []);
+
+  // function pinnedRooms()
+  // {
+  //   console.log('from chats',chats)
+  //   chats.data.map((chat) => {
+  //      const room = chat.users.filter((u)=>{
+  //       return Personel.email === u;
+  //      })
+  //      if(room.length > 0)
+  //      {
+  //       console.log('from room',room)
+  //       console.log('from if',chat.name);
+  //       return (
+  //         <div key={chat._id}>
+  //           <Link to={`/Room/${chat._id}/${Personel.email}/${chat.name}`}>
+  //             <div>{chat.name}</div>
+  //           </Link>
+  //         </div>
+  //       );
+  //      }
+
+  //      return null;
+            
+  //         })
+  // }
 
   return (
     <div className="w-1/4 bg-gradient-to-b from-blue-900 to-white p-4 relative">
@@ -52,18 +80,32 @@ function Sidebar() {
       <h3 className="font-semibold mb-2">Pinned Chats</h3>
       <div className="space-y-4">
         {console.log("side", chats)}
+
         {chats ? ( // Check if pinnedChats is defined and has elements
-          chats.data.map((chat) => 
-              {
-              return(
-              <Link to={`/Room/${chat._id}/${Personel.email}/${chat.name}`} key={chat._id}>
-                {" "}
-                {/* Ensure to provide a unique key */}
-                <div>{chat.name}</div>
-              </Link>
-              )}
-          
-          )
+          <>
+            <div>
+              {chats.data.map((chat) => {
+                const room = chat.users.filter((u) => {
+                  return Personel.email === u;
+                });
+                if (room.length > 0) {
+                  console.log("from room", room);
+                  console.log("from if", chat.name);
+                  return (
+                    <div key={chat._id}>
+                      <Link
+                        to={`/Room/${chat._id}/${Personel.email}/${chat.name}`}
+                      >
+                        <div>{chat.name}</div>
+                      </Link>
+                    </div>
+                  );
+                }
+
+                return null;
+              })}
+            </div>
+          </>
         ) : (
           <div>No chats available</div>
         )}
