@@ -89,7 +89,6 @@ io.on("connect", (socket) => {
   socket.on("join", async ({ roomid, email, callback }) => {
     console.log("someone is joined");
     try {
-
       console.log(roomid);
       console.log(email);
       const room = await Room.findById(roomid);
@@ -101,11 +100,8 @@ io.on("connect", (socket) => {
           socket.join(room);
           room.users.push(email);
           room.save();
-          
         }
-        
       }
-      
     } catch (error) {
       console.error("Error fetching room:", error);
       callback();
@@ -122,7 +118,7 @@ io.on("connect", (socket) => {
       room.messages.push({ message: text, sender: sender });
       room.save();
       socket.emit("message", { message: { text, sender }, change: Date.now() });
-      socket.broadcast.emit("update",{text:text, sender:sender});
+      socket.broadcast.emit("update", { text: text, sender: sender });
       console.log("message done");
     } catch (error) {}
   });

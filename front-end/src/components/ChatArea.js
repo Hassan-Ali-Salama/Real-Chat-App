@@ -41,6 +41,8 @@ function ChatArea({ roomname, roomid }) {
 
       socket.on('update',({text, sender})=>{
         setChange(Date.now());
+        // socket.broadcast.emit("update",{text:text, sender:sender});
+        
         // setNotification(`${sender} has send a new message: ${text} At room ${roomname}`);
       })
     };
@@ -78,7 +80,7 @@ function ChatArea({ roomname, roomid }) {
       setMessages(response.data.data.messages);
       console.log("getr oomid", response.data.data.messages);
       await socket.on("message", ({ sender, message }, change) => {
-        setMessages((message) => [...messages, message]);
+        setMessages([...messages, message]);
         
       });
 
