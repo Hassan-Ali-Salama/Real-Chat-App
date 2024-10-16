@@ -13,7 +13,7 @@ function ChatArea({ roomname, roomid }) {
   const [message, setTheMessage] = useState();
   const [recieveMessage, setRecive] = useState();
   const [change, setChange] = useState(0);
-  const [notification, setNotification] = useState('');
+  const [notification, setNotification] = useState("");
 
   const endpoint = "http://localhost:3003";
   let socket;
@@ -36,15 +36,16 @@ function ChatArea({ roomname, roomid }) {
       socket.on("message", ({ text, sender }) => {
         setTheMessage({ messsage: text, sender: sender });
         setMessages([...messages, message]);
+
         console.log(Personel.email);
       });
 
-      socket.on('update',({text, sender})=>{
+      socket.on("update", ({ text, sender }) => {
         setChange(Date.now());
         // socket.broadcast.emit("update",{text:text, sender:sender});
-        
+
         // setNotification(`${sender} has send a new message: ${text} At room ${roomname}`);
-      })
+      });
     };
 
     fetch();
@@ -81,10 +82,14 @@ function ChatArea({ roomname, roomid }) {
       console.log("getr oomid", response.data.data.messages);
       await socket.on("message", ({ sender, message }, change) => {
         setMessages([...messages, message]);
-        
       });
 
-      
+      socket.emit("notify", {
+        roomname: roomname,
+        roomid: roomid,
+        text: text,
+        sender: sender,
+      });
     };
 
     fetch();
