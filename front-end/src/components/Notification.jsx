@@ -15,7 +15,7 @@ const Notification = () => {
   const endpoint = "http://localhost:3003";
 
   useEffect(() => {
-   socket = io(endpoint);
+    socket = io(endpoint);
 
     socket.on("connect", () => {
       console.log("Connected to socket server");
@@ -23,10 +23,8 @@ const Notification = () => {
 
     //  const handleTakeData = ({ roomid, roomname, text, sender }) => {
     //    setNewNotification({ roomname, messages: text, sender });
-    //    
+    //
     //  };
-
-   
 
     return () => {
       socket.off("takedata"); // Cleanup listener

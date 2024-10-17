@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Login_Context, Personel_context } from "../states/contexs.jsx"; // Make sure these contexts are properly exported
-import Message from "./warning.jsx";
+// import Message from "./warning.jsx";
 import { verify } from "../states/contexs.jsx";
 const url = "http://localhost:3003";
 

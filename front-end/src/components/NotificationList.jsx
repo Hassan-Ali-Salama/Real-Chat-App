@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Login_Context, Personel_context } from "../states/contexs.jsx";
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
 import { io } from "socket.io-client";
 
 const NotificationList = (newNotification) => {
